@@ -1,0 +1,33 @@
+# Section 3: Database
+
+## 23) Creating the Database:
+
+The only remaining major component we're missing now to cover the essence of a web app is the database, which is used to persist data over time.
+This is important because if someone comes to your web app and does something then when they come a month later, you want 
+whatever they did to still be there as that becomes part of a good user experience, if that forms part of your app design.
+The databse is the only really external part in the flask tutorials we'll be doing, will need both sqlite3 installed for both 
+python and system.
+On windows, it comes pre-installed with python, however it'll need to be installed for the system, and the easiest way
+to do this is to run the command prompt as admin, and the run the following command:
+    "winget install sqlite.sqlite"
+Accept the terms of use, them restart the code editor once the install is completed.
+The first thing we'll need to do is create the sqlite database, to do this, we'll run the following command:
+    "sqlite3 data.db"
+where 'data.db' is the database name.
+Next we'll create a table called 'users' as almost every web app will have this table and some basic columns:
+    "create table users (id integer primary key autoincrement, name text, location text);"
+Then once this has run, we can run the command ".tables" to verify that the table was created successfully.
+Now if we insert data into the table, we should be able to see it when we do a query.
+As is, if we ran:
+    "select * from users;"
+We'd get no response as the table is still empty.
+So we'll insert some data into the table:
+    "insert into users (name, location) values ('Anthony', 'Texas');"
+So once the data is in, we'll see data when we run the select again.
+
+## 24) Connect to the Database:
+
+Note that when testing the db in the terminal, we go into sqlite3 command line, and to exit this, simply pass the command:
+    ".quit"
+Having created the database, we need to now connect to it in flask and use it.
+The first thing to do being to "import sqlite3"

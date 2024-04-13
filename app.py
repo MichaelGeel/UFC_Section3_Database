@@ -1,5 +1,6 @@
 # First we import the Flask class from flask:
 from flask import Flask, jsonify, request, url_for, redirect, session, render_template
+import sqlite3
 
 # Instantiating the Flask class that we've imported, __name__ references the name of the module you're working in,
 # in this case: app.py
