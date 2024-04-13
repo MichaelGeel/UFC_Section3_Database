@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Homepage
+{% endblock %}
+
+{% block content %}
+        <h1>Hello {{ name }}, you are on the home page!</h1>
+    <!--Leaving an example of a comment in html here for future reference.-->
+    {% if display %}
+        <h2>This is being displayed!</h2>
+    {% else %}
+        <h2>This is not being displayed!</h2>
+    {% endif %}
+
+    {% for x in my_list %}
+        <h3>{{ x }}</h3>
+    {% endfor %}
+
+    {% for x in listofdicts%}
+        <h4>{{ x['name'] }}</h4>
+        <!--Note: can alternatively use x.name-->
+    {% endfor %}
+
+    <img src="{{ url_for('static', filename='images/prettyprinted.png')}}">
+
+    {% include "include_this.html" %}
+{% endblock %}
