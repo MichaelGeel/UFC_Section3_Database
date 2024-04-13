@@ -1,5 +1,5 @@
 # First we import the Flask class from flask:
-from flask import Flask, jsonify, request, url_for, redirect, session, render_template
+from flask import Flask, jsonify, request, url_for, redirect, session, render_template, g
 import sqlite3
 
 # Instantiating the Flask class that we've imported, __name__ references the name of the module you're working in,
@@ -10,6 +10,25 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 # Adding a secret key to enable flask to sign cookies so that sessions can be implemented.
 app.config['SECRET_KEY'] = 'Thisisasecret'
+
+# Creating a function that allows the formulation of a connection to the database:
+def connect_db():
+        sql = sqlite3.connect('./data.db')
+        sql.row_factory = sqlite3.Row # Setting sqlite to return python dictionaries instead of tuples.
+        return sql
+
+#  Creating a function that'll get the database.
+def get_db():
+        # Check if the database is already existing:
+        if not hasattr(g, 'sqlite3'):
+                g.sqlite_db = connect_db
+        return g.sqlite_db
+
+# Adding an app.teardown_appcontext that runs automatically after each route returns to terminate db connection.
+@app.teardown_appcontext
+def close_db(error):
+        if hasattr(g, 'sqlite_db'):
+                g.sqlite_db.close()
 
 # Creating a route using the Flask object.
 # <name> is not html, it's a placeholder.

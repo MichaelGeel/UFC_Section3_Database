@@ -31,3 +31,35 @@ Note that when testing the db in the terminal, we go into sqlite3 command line, 
     ".quit"
 Having created the database, we need to now connect to it in flask and use it.
 The first thing to do being to "import sqlite3"
+We'll also need to import a global object named 'g' from flask:
+    "from flask import g"
+g is a global object from flask that allows you to store data on it, similar to sessions.
+It's where all the parts of your application will use it as your app is running.
+Now we want to create a function that'll connect to the database, so that whenever we need access to the database, we can call 
+this function.
+We'll add it under our app.configs and call it "connect_db"
+Then inside it we'll call the connect function from sqlite3 library and assign it a namespace.
+    "sql = sqlite3.connect('./data.db')"
+Where ./data.db is the path to the database, though in future it may be a better idea to pass the entire filebath, especially for server-side programming.
+By default, when you run a query in sqlite3 you'll get a list of tuples and tuples are somewhat harder to work with than Python dictionaries.
+So we'll call sqlite3.Row and add it to the row_factory to have get python dictionaries instead of tuples.
+    "sql.row_factory = sqlite3.Row"
+And then lastly we'll return the 'sql' object.
+Now we'll create another function that'll get the database called 'get_db'
+So in general, we first need to connect to the database and then get it in order to be able to work with it.
+First we'll check if the database is already there as it does sometime get used more than once.
+If it's not there, we call the connect_db function to be able to get it.
+This is also where the g object comes in, as we house the db connection within the g object.
+    "g.sqlite_db = connect_db()"
+And this is why we have the attribute check to see if the db connection is already in g as we need to have it stored somewhere
+in order for us to be able to use it.
+Finally, good practice is to close the connection to the database after every route finishes running, and instead of doing it 
+manually every time, we can do it automatically when the route returns.
+Now above all our routes, we'll add a decorator "app.teardown_appcontext" which is automatically called whenever a route returns.
+For the teardown we'll create a function called "close_db" and pass it an 'error' parameter that is passed to it automatically.
+Now in this function all we're doing is checking if the global object g has a sqlite database, then we close the sqlite database.
+This is done to prevent memory leaks because if you leave the database connection open and the route retur.
+Then no one else would be able to access the database as the open connection would remain but be lost in memory and inaccessible.
+
+## 25) Queries:
+
