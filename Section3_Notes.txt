@@ -95,3 +95,17 @@ Then after you execute the statement you need to commit it as sqlite is transact
 Then with these 3 lines the data should be saved in the database.
 Now we'll run the app and test this functionality.
 Then to test it we'll go back to the view results route and change the entry index we're accessing, from 0 to 1.
+
+
+## 27) View All Results:
+
+The last things we'll look at is how to get all the results at once.
+We'll be modifying the home route.
+NOTE: When passing a large list of parameters, can use a "\" to indicate the list continues of the next line without causing syntax errors.
+So we're going to query the database and get the results once again with a fetchall.
+Then lastly we'll return the results to the template as well.
+The we'll modify the home template so that we can see the results.
+For this we just use a for loop to loop through each dict containing an item in the results and fetch the results to an output.
+Note that in templates can use the dot notation for access dictionary data because it's a little cleaner and the data gets converted so this can be done in a template.
+In normal Python it wouldn't be doable.
+We'll save and test the route and should see a list of the entries in the datbase.

@@ -5,8 +5,15 @@
 {% endblock %}
 
 {% block content %}
+    {{ super() }}
         <h1>Hello {{ name }}, you are on the home page!</h1>
     <!--Leaving an example of a comment in html here for future reference.-->
+
+    <h1>Database Results!</h1>
+    {% for item in results %}
+    <h2>ID: {{ item['id'] }} Name: {{ item['name'] }} Location: {{ item['location'] }}</h2>
+    {% endfor %}
+
     {% if display %}
         <h2>This is being displayed!</h2>
     {% else %}

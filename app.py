@@ -53,11 +53,17 @@ def index(): # name):
 def home(name):
         # Adding name to the session dictionary.
         session['name'] = name
+
+        # Getting all results from the database:
+        db = get_db()
+        cur = db.execute('select id, name, location from users')
+        results = cur.fetchall()
+
         # Refactoring the return to use the home.html template instead and feeding it the name variable.
         # Adding a boolean variable to pass for demonstrating conditional statements inside a template.
         # Adding a list and list of dictionaries to demonstrate the use of for loops in a template.
         return render_template('home.html', name=name, display=True, my_list=['one', 'two', 'three', 'four'],
-                                listofdicts=[{'name': 'zack'}, {'name': 'zoe'}])
+                                listofdicts=[{'name': 'zack'}, {'name': 'zoe'}], results=results)
 
 # Creating a route to return a jsonified version of python data structures.
 @app.route('/json')
@@ -106,7 +112,7 @@ def process():
         # Adding functionality for adding to the database:
         db = get_db()
         db.execute('insert into users (name, location) values (?, ?)', [name, location])
-        db.commit()
+        db.commit() # Committing because sqlite is transactional.
 
         # Also removing the return statemnt.
         # return '<h1>Hello {} from {}. You have submitted the form.</h1>'.format(name, location)
