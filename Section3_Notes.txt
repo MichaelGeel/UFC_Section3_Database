@@ -39,8 +39,9 @@ Now we want to create a function that'll connect to the database, so that whenev
 this function.
 We'll add it under our app.configs and call it "connect_db"
 Then inside it we'll call the connect function from sqlite3 library and assign it a namespace.
-    "sql = sqlite3.connect('./data.db')"
-Where ./data.db is the path to the database, though in future it may be a better idea to pass the entire filebath, especially for server-side programming.
+    "sql = sqlite3.connect('db path')"
+Where db path is the path to the database, it's best to use the full path to save on difficulties finding the db, the easiest way
+in vs code is to right click on the file and select copy path.
 By default, when you run a query in sqlite3 you'll get a list of tuples and tuples are somewhat harder to work with than Python dictionaries.
 So we'll call sqlite3.Row and add it to the row_factory to have get python dictionaries instead of tuples.
     "sql.row_factory = sqlite3.Row"
@@ -62,4 +63,24 @@ This is done to prevent memory leaks because if you leave the database connectio
 Then no one else would be able to access the database as the open connection would remain but be lost in memory and inaccessible.
 
 ## 25) Queries:
+
+As things are right now, we haven't actually tested the code we done at all yet so before we start using the database let's 
+test and ensure it all does work.
+The first thing we want to do is get the results from the database in a query, and to do that we'll create a new route called 'viewresults'
+Now within the function we first want to get the database using the get_db function.
+Thereafter we can execute a query on the database, but we have to assign it to a variable as we need somewhere to store the results.
+    "cur = db.execute('select id, name, location from users')"
+When we execute a query on the db, we get a cursor which is a pointer to the results.
+Once we have the cursor, we need to run the following line of code to actually get the results:
+    "results = cur.fetchall()"
+fetchall retrieves all the data in the form of a list of dictionaries.
+Each item in the list represents a row, and each key in the dictionary represents a column within a row.
+Then we'll return the value in the db that we got as a result, and as there's currently only a single entry we don't need to 
+handle multiple values yet.
+To fetch a specific value from the results we'd have to fetch it as: results[0]['item']
+Now we save and reload the page to be able to test this.
+And the output should show the entry we have in the database.
+
+
+## 26) Inserting Data:
 

@@ -13,7 +13,7 @@ app.config['SECRET_KEY'] = 'Thisisasecret'
 
 # Creating a function that allows the formulation of a connection to the database:
 def connect_db():
-        sql = sqlite3.connect('./data.db')
+        sql = sqlite3.connect('D:\Learning\The Ultimate Flask Course\Section3_Database\data.db')
         sql.row_factory = sqlite3.Row # Setting sqlite to return python dictionaries instead of tuples.
         return sql
 
@@ -21,7 +21,7 @@ def connect_db():
 def get_db():
         # Check if the database is already existing:
         if not hasattr(g, 'sqlite3'):
-                g.sqlite_db = connect_db
+                g.sqlite_db = connect_db()
         return g.sqlite_db
 
 # Adding an app.teardown_appcontext that runs automatically after each route returns to terminate db connection.
@@ -134,6 +134,15 @@ def processjson():
         rand_list = data['randomlist']
 
         return jsonify({'result': 'success', 'name': name, 'location': location, 'Rand_list_key': rand_list[2]})
+
+# Creating a route to view the users in the database:
+@app.route('/viewresults')
+def viewresults():
+        # Getting the db connection so that we can query the database.
+        db = get_db()
+        cur = db.execute('select id, name, location from users')
+        results = cur.fetchall()
+        return '<h1>The ID is {}. The name is {}. The location is {}.</h1>'.format(results[0]['id'], results[0]['name'], results[0]['location'])
 
 # Removing debug=True for the new configuration method.
 if __name__ == '__main__':
