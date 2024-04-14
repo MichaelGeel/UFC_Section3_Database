@@ -103,6 +103,11 @@ def process():
         name = request.form['name']
         location = request.form['location']
 
+        # Adding functionality for adding to the database:
+        db = get_db()
+        db.execute('insert into users (name, location) values (?, ?)', [name, location])
+        db.commit()
+
         # Also removing the return statemnt.
         # return '<h1>Hello {} from {}. You have submitted the form.</h1>'.format(name, location)
         # Building the return statement redirect:
@@ -142,7 +147,7 @@ def viewresults():
         db = get_db()
         cur = db.execute('select id, name, location from users')
         results = cur.fetchall()
-        return '<h1>The ID is {}. The name is {}. The location is {}.</h1>'.format(results[0]['id'], results[0]['name'], results[0]['location'])
+        return '<h1>The ID is {}. The name is {}. The location is {}.</h1>'.format(results[1]['id'], results[1]['name'], results[1]['location'])
 
 # Removing debug=True for the new configuration method.
 if __name__ == '__main__':

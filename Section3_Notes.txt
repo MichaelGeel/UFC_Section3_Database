@@ -84,3 +84,14 @@ And the output should show the entry we have in the database.
 
 ## 26) Inserting Data:
 
+For adding to the database, we'll modify '/theform', specifically the POST functionality.
+We'll once again need to get_db.
+Note that because we're posting to the db and not retrieving anything there won't be a cursor to retrieve data as no data will be returned.
+We'll execute the insert using the variables we assigned to the name and location.
+    "db.execute('insert into users (name, location) values (?, ?)', [name, location])"
+The reason we use the '?' is to prevent SQL infection so sqlite can format the insert statement for you instead of putting the values in the string yourself.
+So we supply a list of the items in order that you want to insert.
+Then after you execute the statement you need to commit it as sqlite is transactional.
+Then with these 3 lines the data should be saved in the database.
+Now we'll run the app and test this functionality.
+Then to test it we'll go back to the view results route and change the entry index we're accessing, from 0 to 1.
